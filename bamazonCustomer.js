@@ -12,30 +12,33 @@ connection.connect(function(err){
     if (err) throw err;
 
 });
-var itemID
+var itemID;
 connection.query("SELECT item_id FROM products", function (err, data){
     if(err) throw err;
-    itemID = res.item_id;
+    itemID = data.item_id;
     console.log(itemID);
     return itemID
 })
-inquirer
-.prompt(
-    {
-        name: 'itemId',
-        type: 'input',
-        message: 'What is the ID of the product they would like to buy?',
-        validate: function validateID(input){
-            if(input === ){
-                return true;
-            }
-            else{
-                return false;
+
+function question(){
+    inquirer
+    .prompt(
+        {
+            name: 'itemId',
+            type: 'input',
+            message: 'What is the ID of the product they would like to buy?',
+            validate: function validateID(input){
+                if(input === itemID){
+                    return true;
+                }
+                else{
+                    return false;
+                }
             }
         }
-    },
-    {
-        name:'quantity',
-        type: ''
-    }
-)
+        // {
+        //     name:'quantity',
+        //     type: ''
+        // }
+    )
+}
