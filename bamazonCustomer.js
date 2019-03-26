@@ -15,9 +15,8 @@ connection.connect(function(err){
 var itemID;
 connection.query("SELECT item_id FROM products", function (err, data){
     if(err) throw err;
-    itemID = data.item_id;
-    console.log(itemID);
-    return itemID
+    itemID = data;
+    question();
 })
 
 function question(){
@@ -28,10 +27,11 @@ function question(){
             type: 'input',
             message: 'What is the ID of the product they would like to buy?',
             validate: function validateID(input){
-                if(input === itemID){
+                if(input <= itemID.length){
                     return true;
                 }
                 else{
+                    console.log("\nPlease enter and ID from the list.")
                     return false;
                 }
             }
