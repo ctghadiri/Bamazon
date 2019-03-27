@@ -36,12 +36,12 @@ connection.query("SELECT * FROM products"), function (err, res){
 // connection.query("SELECT item_id FROM products", function (err, res){
 //     if(err) throw err;
 //     itemID = res;
-//     // question();
+//     // chooseItem();
 // })
 
 // Pull for quantity amount
 var productQuantity;
-connection.query("SELECT quantity FROM products WHERE ?",{
+connection.query("SELECT stock FROM products WHERE ?",{
     item_id: name.itemID
 }, function (err, res){
     if(err) throw err;
@@ -49,11 +49,21 @@ connection.query("SELECT quantity FROM products WHERE ?",{
 })
 
 // Update table with new quantity
-connection.query("UPDATE quantity FROM products")
+connection.query("UPDATE products SET ? WHERE ?",
+    [
+        {
+            stock: answer.quantity
+        },
+        {
+            item_id: itemID
+        }
+    ], function(err, res){
+        if(err) throw err;
+    })
 
 
 // Function for initial question
-function question(){
+function chooseItem(){
     inquirer
     .prompt(
         {
