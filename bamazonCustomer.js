@@ -58,10 +58,19 @@ function question(){
                     return false;
                 }
             }
+        },
+        {
+            name:'quantity',
+            type: 'input',
+            message: 'How many would you like to purchase?',
+            validate: function validateQuantity(input){
+                if(input >= itemQuantity && input > 0){
+                    return true;
+                }
+                else{
+                    return false;
+                }
+            }
         }
-        // {
-        //     name:'quantity',
-        //     type: ''
-        // }
-    )
+    );
 }
