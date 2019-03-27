@@ -13,7 +13,8 @@ connection.connect(function(err){
     if (err) throw err;
 });
 
-
+// Make global variable for item chosen
+var itemChosen;
 // Function for question choosing item
 function chooseItem(){
     inquirer
@@ -24,6 +25,7 @@ function chooseItem(){
             message: 'What is the ID of the product they would like to buy?',
             validate: function validateID(input){
                 if(input <= itemID.length && input >0){
+                    itemChosen = input;
                     return true;
                 }
                 else{
@@ -32,9 +34,13 @@ function chooseItem(){
                 }
             }
         }
-    );
+    ).then(function (itemChosen){
+        chooseAmount();
+    });
 };
 
+// Make global variable for quantityChosen
+var quantityChosen;
 // Function for choosing amount of item chosen
 function chooseAmount(){
     inquirer
@@ -44,7 +50,8 @@ function chooseAmount(){
             type: 'input',
             message: 'How many would you like to purchase?',
             validate: function validateQuantity(input){
-                if(input >= itemQuantity && input > 0){
+                if(input >= productQuantity && input > 0){
+                    quantityChosen = input;
                     return true;
                 }
                 else{
