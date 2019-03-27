@@ -14,7 +14,6 @@ connection.connect(function(err){
     start();
 });
 
-// Make global variable for item chosen
 // Function for question choosing item and quantity
 function chooseItem(res){
     inquirer
@@ -24,12 +23,11 @@ function chooseItem(res){
             type: 'input',
             message: 'What is the ID of the product they would like to buy? (Press q or Q to quit)',
             validate: function validateID(input){
-                if(input <= res.length && input >0){
-                    itemChosen = input;
+                if(input === 'q' || input === 'Q' ){
                     return true;
                 }
-                else if(input === 'q' || input === 'Q'){
-                    connection.end();
+                else if(input <= res.length && input >0){
+                    return true;
                 }
                 else{
                     console.log("\nPlease enter and ID from the list.")
@@ -38,10 +36,14 @@ function chooseItem(res){
             }
         }
     ).then(function (answer){
-        answer = answer.itemId;
-        // console.log(res[0].stock)
-        res = res[answer - 1].stock;
-        chooseQuantity(answer, res);
+        if(answer.itemId === 'q' || answer.itemId === 'Q'){
+            connection.end();
+        }
+        else{
+            answer = answer.itemId;
+            res = res[answer - 1].stock;
+            chooseQuantity(answer, res);
+        }
     })
 };
 function chooseQuantity(id, info){
@@ -98,11 +100,3 @@ function start(){
         chooseItem(res);
     });
 };
-
-
-// Pull for array of items
-var itemID;
-connection.query("SELECT item_id FROM products", function (err, res){
-    if(err) throw err;
-    itemID = res;
-})
