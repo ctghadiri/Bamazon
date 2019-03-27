@@ -11,31 +11,37 @@ var connection = mysql.createConnection({
 });
 connection.connect(function(err){
     if (err) throw err;
-    start();
 });
-var itemID;
-connection.query("SELECT item_id FROM products", function (err, res){
-    if(err) throw err;
-    itemID = res;
-    question();
-})
 
-function start(){
-    connection.query("SELECT * FROM products"), function (err, res){
-        if (err) throw err;
-        var table = new Table({
-            head: ['item_id', 'product_name', 'department_name', 'price', 'stock'], colWidths: [100, 200]
-        });
+// Creation of product list
+connection.query("SELECT * FROM products"), function (err, res){
+    if (err) throw err;
+    console.log(res)
+    
+//     var table = new Table({
+//         head: ['item_id', 'product_name', 'department_name', 'price', 'stock'], colWidths: [100, 200]
+//     });
 
-        for(var i = 0;i < res.length; i++){
+//     for(var i = 0;i < res.length; i++){
 
-            table.push(res[i].item_id, res[i].product_name, res[i].department_name, res[i].price, res[i].stock)
+//         table.push(res[i].item_id, res[i].product_name, res[i].department_name, res[i].price, res[i].stock)
 
-        }
-        console.log(table.toString());
-    }
+//     }
+//     console.log(table.toString());
 }
 
+
+// Pull for array of items
+// var itemID;
+// connection.query("SELECT item_id FROM products", function (err, res){
+//     if(err) throw err;
+//     itemID = res;
+//     // question();
+// })
+
+
+
+// Function for initial question
 function question(){
     inquirer
     .prompt(
