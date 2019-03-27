@@ -39,12 +39,17 @@ connection.query("SELECT * FROM products"), function (err, res){
 //     // question();
 // })
 
+// Pull for quantity amount
+var productQuantity;
 connection.query("SELECT quantity FROM products WHERE ?",{
     item_id: name.itemID
 }, function (err, res){
     if(err) throw err;
+    productQuantity = res;
 })
 
+// Update table with new quantity
+connection.query("UPDATE quantity FROM products")
 
 
 // Function for initial question
