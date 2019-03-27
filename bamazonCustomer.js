@@ -13,6 +13,48 @@ connection.connect(function(err){
     if (err) throw err;
 });
 
+
+// Function for question choosing item
+function chooseItem(){
+    inquirer
+    .prompt(
+        {
+            name: 'itemId',
+            type: 'input',
+            message: 'What is the ID of the product they would like to buy?',
+            validate: function validateID(input){
+                if(input <= itemID.length && input >0){
+                    return true;
+                }
+                else{
+                    console.log("\nPlease enter and ID from the list.")
+                    return false;
+                }
+            }
+        }
+    );
+};
+
+// Function for choosing amount of item chosen
+function chooseAmount(){
+    inquirer
+    .prompt(
+        {
+            name:'quantity',
+            type: 'input',
+            message: 'How many would you like to purchase?',
+            validate: function validateQuantity(input){
+                if(input >= itemQuantity && input > 0){
+                    return true;
+                }
+                else{
+                    return false;
+                }
+            }
+        }
+    );
+};
+
 // Creation of product list
 connection.query("SELECT * FROM products"), function (err, res){
     if (err) throw err;
@@ -62,42 +104,3 @@ connection.query("UPDATE products SET ? WHERE ?",
     })
 
 
-// Function for initial question
-function chooseItem(){
-    inquirer
-    .prompt(
-        {
-            name: 'itemId',
-            type: 'input',
-            message: 'What is the ID of the product they would like to buy?',
-            validate: function validateID(input){
-                if(input <= itemID.length && input >0){
-                    return true;
-                }
-                else{
-                    console.log("\nPlease enter and ID from the list.")
-                    return false;
-                }
-            }
-        }
-    );
-};
-
-function chooseAmount(){
-    inquirer
-    .prompt(
-        {
-            name:'quantity',
-            type: 'input',
-            message: 'How many would you like to purchase?',
-            validate: function validateQuantity(input){
-                if(input >= itemQuantity && input > 0){
-                    return true;
-                }
-                else{
-                    return false;
-                }
-            }
-        }
-    );
-};
