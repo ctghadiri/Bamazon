@@ -11,11 +11,10 @@ var connection = mysql.createConnection({
 });
 connection.connect(function(err){
     if (err) throw err;
-    showTable();
+    start();
 });
 
 // Make global variable for item chosen
-var itemChosen;
 // Function for question choosing item and quantity
 function chooseItem(res){
     inquirer
@@ -37,14 +36,23 @@ function chooseItem(res){
                     return false;
                 }
             }
-        },
+        }
+    ).then(function (answer){
+        answer = answer.itemId;
+        // console.log(res[0].stock)
+        res = res[answer - 1].stock;
+        chooseQuantity(answer, res);
+    })
+};
+function chooseQuantity(id, info){
+    inquirer
+    .prompt(
         {
             name:'quantity',
             type: 'input',
             message: 'How many would you like to purchase?',
             validate: function validateQuantity(input){
-                if(input >= res && input > 0){
-                    quantityChosen = input;
+                if(input <= info && input > 0){
                     return true;
                 }
                 else{
@@ -52,14 +60,25 @@ function chooseItem(res){
                 }
             }
         }
-    ).then(function (answer){
-
-        // chooseAmount();
+        ).then(function (answer){
+            
+        connection.query("UPDATE products SET ? WHERE ?",
+            [
+                {
+                    stock: info - answer.quantity
+                },
+                {
+                    item_id: id
+                }
+            ], function(err, res){
+                if(err) throw err;
+                start();
+        })
     });
 };
 
 // Creation of product list
-function showTable(){
+function start(){
 
     connection.query("SELECT * FROM products", function (err, res){
         if (err) throw err; 
@@ -78,7 +97,7 @@ function showTable(){
 
         chooseItem(res);
     });
-}
+};
 
 
 // Pull for array of items
@@ -86,29 +105,4 @@ var itemID;
 connection.query("SELECT item_id FROM products", function (err, res){
     if(err) throw err;
     itemID = res;
-    // chooseItem();
 })
-
-// Pull for quantity amount
-var productQuantity;
-connection.query("SELECT stock FROM products WHERE ?",{
-    item_id: name.itemID
-}, function (err, res){
-    if(err) throw err;
-    productQuantity = res;
-})
-
-// Update table with new quantity
-connection.query("UPDATE products SET ? WHERE ?",
-    [
-        {
-            stock: answer.quantity
-        },
-        {
-            item_id: itemID
-        }
-    ], function(err, res){
-        if(err) throw err;
-    })
-
-
