@@ -79,7 +79,13 @@ function chooseItem(){
                     return false;
                 }
             }
-        },
+        }
+    );
+};
+
+function chooseAmount(){
+    inquirer
+    .prompt(
         {
             name:'quantity',
             type: 'input',
@@ -94,4 +100,4 @@ function chooseItem(){
             }
         }
     );
-}
+};
