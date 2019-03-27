@@ -11,29 +11,29 @@ var connection = mysql.createConnection({
 });
 connection.connect(function(err){
     if (err) throw err;
-
+    start();
 });
 var itemID;
-connection.query("SELECT item_id FROM products", function (err, data){
+connection.query("SELECT item_id FROM products", function (err, res){
     if(err) throw err;
-    itemID = data;
+    itemID = res;
     question();
 })
 
-connection.query("SELECT * FROM products"), function (err, res){
-    if (err) throw err;
-    var res = res
-    console.log(res);
-    var table = new Table({
-        head: ['item_id', 'product_name', 'department_name', 'price', 'stock'], colWidths: [100, 200]
-    });
+function start(){
+    connection.query("SELECT * FROM products"), function (err, res){
+        if (err) throw err;
+        var table = new Table({
+            head: ['item_id', 'product_name', 'department_name', 'price', 'stock'], colWidths: [100, 200]
+        });
 
-    for(var i = 0, i < res.length; i++){
+        for(var i = 0;i < res.length; i++){
 
-        table.push(res[i]);
+            table.push(res[i].item_id, res[i].product_name, res[i].department_name, res[i].price, res[i].stock)
 
+        }
+        console.log(table.toString());
     }
-    console.log(table.toString());
 }
 
 function question(){
