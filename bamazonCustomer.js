@@ -39,6 +39,12 @@ connection.query("SELECT * FROM products"), function (err, res){
 //     // question();
 // })
 
+connection.query("SELECT quantity FROM products WHERE ?",{
+    item_id: name.itemID
+}, function (err, res){
+    if(err) throw err;
+})
+
 
 
 // Function for initial question
