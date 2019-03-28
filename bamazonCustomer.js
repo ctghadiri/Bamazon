@@ -30,7 +30,7 @@ function chooseItem(res){
                     return true;
                 }
                 else{
-                    console.log("\nPlease enter and ID from the list.")
+                    console.log("\nPlease enter an ID from the list.")
                     return false;
                 }
             }
@@ -58,12 +58,13 @@ function chooseQuantity(id, info){
                     return true;
                 }
                 else{
+                    console.log("\nPlease enter an amount available.")
                     return false;
                 }
             }
         }
         ).then(function (answer){
-            
+        console.log("Thank you for your purchase!")
         connection.query("UPDATE products SET ? WHERE ?",
             [
                 {
@@ -86,8 +87,7 @@ function start(){
         if (err) throw err; 
         
         var table = new Table({
-            head: ['item_id', 'product_name', 'department_name', 'price', 'stock'], colWidths: [100, 200],
-            colWidths: [50, 120, 120, 50, 50]
+            head: ['item_id', 'product_name', 'department_name', 'price', 'stock'], colWidths: [10, 30, 30, 10, 10]
         });
 
         for(var i = 0;i < res.length; i++){
